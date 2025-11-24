@@ -3,9 +3,6 @@ from . import prompt
 from .schema import ResumeOutput
 from google.genai import types
 
-json_response_config = types.GenerateContentConfig(
-    response_mime_type="application/json"
-)
 
 # A single, powerful agent to perform the hierarchical mapping.
 resume_agent = Agent(
@@ -18,5 +15,3 @@ resume_agent = Agent(
     # generate_content_config=json_response_config
     
 )
-
-root_agent = resume_agent

@@ -6,7 +6,7 @@ def resume_agent_prompt():
     You will be provided with:
     1. The user's existing resume (JSON).
     2. The job description (Text).
-    3. (Optional) ATS feedback (Text).
+    3. (Optional) ATS feedback (Text) from ATS agent output ar jey 'ats_feedback' .
     4. (Optional) Desired resume length (e.g., "1 page", "2 pages").
 
     **CRITICAL INSTRUCTION ON LENGTH:**
@@ -23,7 +23,7 @@ def resume_agent_prompt():
     - Select and tailor relevant Projects that demonstrate required skills.
     - Incorporate keywords from the JD and ATS feedback (if provided).
     - Maintain a professional tone.
-    - Return the result in the specified JSON format.esume. 
+    - Return the result in the specified JSON format.
 
 
     Note: Be specific about projects you've worked on or managed. What was the outcome? How did you measure success? When in doubt, lean on the formula, “accomplished [X] as measured by [Y], by doing [Z].”

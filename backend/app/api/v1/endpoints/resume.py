@@ -7,8 +7,8 @@ from app.models.user_profile import UserProfile
 from app.models.generated_resume import GeneratedResume
 from pydantic import BaseModel
 from typing import Optional
-from app.agents.resume_agent.agent import root_agent
-from app.agents.resume_agent.schema import ResumeInput
+from app.agents.resume_tailor_agent.agent import root_agent
+from app.agents.resume_tailor_agent.schema import ResumeInput
 from app.services import file_service
 from google.adk.runners import InMemoryRunner
 from google.genai.types import Content, Part
@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse
 from app.services.template_service import template_service
 
 router = APIRouter()
-app_name = "ResumeAgent"
+app_name = "ResumeTailorAgent"
 runner = InMemoryRunner(agent=root_agent, app_name=app_name)
 
 
@@ -30,8 +30,11 @@ async def generate_resume(
     template_id: Optional[int] = None,
     resume_length: str = "1 page",
     email: str = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
+    db: Session = Depends(get_db)   
+    ):
+    """
+    Generate a tailored resume based on the user's profile and job description.
+    """
     try:
         current_user = db.query(User).filter(User.email == email).first()
         if not current_user:
@@ -52,7 +55,7 @@ async def generate_resume(
         }
         
         # Validate against schema (optional but good for debugging)
-        # resume_input = ResumeInput(**resume_input_data)
+        resume_input = ResumeInput(**resume_input_data)
 
         # Create a session
         session_id = f"resume-session-{uuid.uuid4()}"
@@ -60,12 +63,12 @@ async def generate_resume(
         session = await runner.session_service.create_session(app_name=runner.app_name, user_id=user_id, session_id=session_id)
         
         # Create a message
-        initial_message = Content(role="user", parts=[Part(text=ResumeInput(**resume_input_data).model_dump_json())])
+        initial_message = Content(role="user", parts=[Part(text=resume_input.model_dump_json())])
         
         # Run the agent
         async for _ in runner.run_async(user_id=user_id, session_id=session_id, new_message=initial_message):
             pass
-
+        
         final_session = await runner.session_service.get_session(app_name=runner.app_name, user_id=user_id, session_id=session_id)
         # The result is the output of the resume agent in the sequence
         # Expected to be ResumeOutput (tailored_resume, verdict, strength, weakness)
