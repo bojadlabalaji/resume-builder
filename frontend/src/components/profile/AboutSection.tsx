@@ -21,9 +21,9 @@ export function AboutSection({ data, onSave }: AboutSectionProps) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200 relative">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700 relative">
             <div className="flex justify-between items-start mb-4">
-                <h2 className="text-xl font-bold text-gray-900">About</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">About</h2>
                 <Button
                     variant="ghost"
                     size="icon"

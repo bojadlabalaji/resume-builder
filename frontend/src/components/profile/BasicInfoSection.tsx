@@ -31,7 +31,7 @@ export function BasicInfoSection({ data, onSave }: BasicInfoSectionProps) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200 relative">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700 relative">
             <Button
                 variant="ghost"
                 size="icon"
@@ -49,9 +49,9 @@ export function BasicInfoSection({ data, onSave }: BasicInfoSectionProps) {
                     {getInitials(data?.name || "")}
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-2xl font-bold text-gray-900">{data?.name || "Your Name"}</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{data?.name || "Your Name"}</h2>
 
-                    <div className="space-y-1 text-gray-600">
+                    <div className="space-y-1 text-gray-600 dark:text-gray-300">
                         {data?.email && (
                             <div className="flex items-center gap-2">
                                 <Mail className="w-4 h-4" />
@@ -77,7 +77,7 @@ export function BasicInfoSection({ data, onSave }: BasicInfoSectionProps) {
             <Modal isOpen={isEditing} onClose={() => setIsEditing(false)} title="Edit Basic Info">
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Full Name</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Full Name</label>
                         <Input
                             value={formData.name || ""}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -85,7 +85,7 @@ export function BasicInfoSection({ data, onSave }: BasicInfoSectionProps) {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Email</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
                         <Input
                             value={formData.email || ""}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -93,7 +93,7 @@ export function BasicInfoSection({ data, onSave }: BasicInfoSectionProps) {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Phone</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
                         <Input
                             value={formData.phone || ""}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -101,7 +101,7 @@ export function BasicInfoSection({ data, onSave }: BasicInfoSectionProps) {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Location</label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Location</label>
                         <Input
                             value={formData.location || ""}
                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}

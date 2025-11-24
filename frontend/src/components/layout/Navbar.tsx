@@ -59,20 +59,7 @@ export function Navbar() {
                     >
                         Builder
                     </Link>
-                    {isLoggedIn && (
-                        <Link
-                            href="/profile"
-                            className={cn(
-                                "text-sm font-medium px-4 py-2 rounded-full transition-all flex items-center gap-2",
-                                pathname === "/profile"
-                                    ? "bg-gold-500 text-white shadow-md shadow-gold-500/20 hover:bg-gold-600 dark:text-black"
-                                    : "text-muted-foreground hover:text-gold-500 hover:bg-gold-50/50 dark:hover:bg-gold-900/10"
-                            )}
-                        >
-                            <User className="h-4 w-4" />
-                            Profile
-                        </Link>
-                    )}
+
                     <Link
                         href="/#features"
                         className={cn(
@@ -87,6 +74,23 @@ export function Navbar() {
                 </nav>
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
+
+                    {isLoggedIn && (
+                        <Link
+                            href="/profile"
+                            className={cn(
+                                "text-sm font-medium px-4 py-2 rounded-full transition-all flex items-center gap-2 hover:bg-gold-50/50 dark:hover:bg-gold-900/10",
+                                pathname === "/profile"
+                                    ? "bg-gold-500 text-white shadow-md shadow-gold-500/20 hover:bg-gold-600 dark:text-black"
+                                    : "text-muted-foreground hover:text-gold-500 hover:bg-gold-50/50 dark:hover:bg-gold-900/10"
+                            )}
+                        >
+                            <User className="h-4 w-4" />
+                            Profile
+                        </Link>
+                    )}
+
+
                     {isLoggedIn ? (
                         <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">
                             <LogOut className="h-4 w-4" />

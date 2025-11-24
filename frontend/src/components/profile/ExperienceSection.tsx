@@ -67,9 +67,9 @@ export function ExperienceSection({ data, onSave }: ExperienceSectionProps) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Experience</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Experience</h2>
                 <Button variant="ghost" size="icon" onClick={handleAdd}>
                     <Plus className="w-5 h-5" />
                 </Button>

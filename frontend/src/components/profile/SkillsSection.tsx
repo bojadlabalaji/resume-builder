@@ -71,8 +71,8 @@ export function SkillsSection({ data, onSave }: SkillsSectionProps) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Skills</h2>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Skills</h2>
 
             <div className="space-y-4">
                 {skills.map((skillGroup, groupIndex) => (
