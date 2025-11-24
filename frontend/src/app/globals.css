@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+:root {
+  /* Base Colors - Light Theme (Shades of White) */
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Card/Surface Colors for Light Theme */
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #fafafa;
+  --accent-foreground: #171717;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+
+  /* Gold Theme Palette - Updated to #FFC400 */
+  /* Primary Gold - The main accent */
+  --gold-500: #FFC400;
+  /* Light Gold - For highlights/backgrounds */
+  --gold-100: #FFF8E1;
+  /* Very light amber */
+  /* Dark Gold - For text/borders */
+  --gold-700: #B28900;
+  /* Darker shade of #FFC400 */
+
+  /* Shadow System - 3 Shades Principle */
+  --shadow-block:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 196, 0, 0.1);
+  /* Subtle gold ring */
+
+  --shadow-block-hover:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(255, 196, 0, 0.3);
+  /* Stronger gold ring */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+
+  --color-gold-100: var(--gold-100);
+  --color-gold-500: var(--gold-500);
+  --color-gold-700: var(--gold-700);
+
+  --shadow-block: var(--shadow-block);
+  --shadow-block-hover: var(--shadow-block-hover);
+}
+
+/* Dark Mode - Class Based Selector */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --card: #0a0a0a;
+  --card-foreground: #ededed;
+  --popover: #0a0a0a;
+  --popover-foreground: #ededed;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --accent: #262626;
+  --accent-foreground: #ededed;
+  --border: #262626;
+  --input: #262626;
+
+  /* Dark Mode Adjustments */
+  --gold-500: #FFD600;
+  /* Slightly brighter for dark mode */
+  --gold-100: #332600;
+  /* Dark background tint */
+  --gold-700: #FFEA00;
+  /* Brighter for contrast on dark */
+
+  --shadow-block:
+    0 4px 6px -1px rgba(0, 0, 0, 0.5),
+    0 10px 15px -3px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 214, 0, 0.2);
+
+  --shadow-block-hover:
+    0 20px 25px -5px rgba(0, 0, 0, 0.5),
+    0 8px 10px -6px rgba(0, 0, 0, 0.5),
+    0 0 0 2px rgba(255, 214, 0, 0.4);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
