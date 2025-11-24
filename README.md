@@ -61,6 +61,12 @@ Once the containers are running, you can access:
 - **Frontend**: [http://localhost:3000](http://localhost:3000)
 - **Backend API Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
+### 5. Database
+
+The application uses SQLite for data storage. **No database setup is required** - the database file (`resume_builder.db`) is automatically created with all necessary tables when the backend starts for the first time.
+
+**Note**: The database file is intentionally excluded from version control. Each user/deployment gets their own fresh database.
+
 ## Development
 
 ### Running Locally (Without Docker)

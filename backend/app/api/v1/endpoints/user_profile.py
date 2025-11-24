@@ -85,3 +85,27 @@ async def create_profile(
     except Exception as e:
         print(f"Error generating profile: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.put("/{profile_id}", response_model=dict)
+def update_profile(
+    profile_id: int,
+    profile_data: dict,
+    email: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update an existing source profile.
+    """
+    current_user = db.query(User).filter(User.email == email).first()
+    if not current_user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    profile = db.query(UserProfile).filter(UserProfile.id == profile_id, UserProfile.user_id == current_user.id).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+        
+    profile.profile_data = profile_data
+    db.commit()
+    db.refresh(profile)
+    
+    return {"id": profile.id, "name": profile.name, "profile_data": profile.profile_data}

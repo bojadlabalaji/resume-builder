@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { FileText, LogOut } from "lucide-react"
+import { FileText, LogOut, User } from "lucide-react"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { Button } from "@/components/ui/Button"
 import { useEffect, useState } from "react"
@@ -59,6 +59,20 @@ export function Navbar() {
                     >
                         Builder
                     </Link>
+                    {isLoggedIn && (
+                        <Link
+                            href="/profile"
+                            className={cn(
+                                "text-sm font-medium px-4 py-2 rounded-full transition-all flex items-center gap-2",
+                                pathname === "/profile"
+                                    ? "bg-gold-500 text-white shadow-md shadow-gold-500/20 hover:bg-gold-600 dark:text-black"
+                                    : "text-muted-foreground hover:text-gold-500 hover:bg-gold-50/50 dark:hover:bg-gold-900/10"
+                            )}
+                        >
+                            <User className="h-4 w-4" />
+                            Profile
+                        </Link>
+                    )}
                     <Link
                         href="/#features"
                         className={cn(

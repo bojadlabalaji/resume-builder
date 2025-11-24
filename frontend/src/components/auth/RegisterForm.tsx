@@ -32,9 +32,19 @@ export function RegisterForm() {
             await register(email, password)
             router.push("/builder")
             router.refresh() // Update navbar state
-        } catch (err) {
+        } catch (err: any) {
             console.error(err)
-            setError("Registration failed. Please try again.")
+            if (err.response && err.response.data && err.response.data.detail) {
+                const detail = err.response.data.detail;
+                if (Array.isArray(detail)) {
+                    // Handle FastAPI validation errors
+                    setError(detail.map((e: any) => e.msg).join(", "));
+                } else {
+                    setError(detail);
+                }
+            } else {
+                setError("Registration failed. Please try again.")
+            }
         } finally {
             setLoading(false)
         }
