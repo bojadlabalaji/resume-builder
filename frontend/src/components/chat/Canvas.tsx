@@ -13,7 +13,7 @@ export function Canvas({ isOpen, onClose, content, title = 'Resume Preview' }: C
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-y-0 right-0 w-full md:w-[50%] bg-[#2f2f2f] border-l border-[#3f3f3f] flex flex-col z-40 animate-slide-in">
+        <div className="fixed inset-y-0 right-0 w-full md:w-[70%] bg-[#2f2f2f] border-l border-[#3f3f3f] flex flex-col z-40 animate-slide-in shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[#3f3f3f]">
                 <div className="flex items-center gap-3">

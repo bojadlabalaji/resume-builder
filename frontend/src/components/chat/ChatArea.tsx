@@ -152,7 +152,7 @@ export function ChatArea() {
 
     return (
         <>
-            <div className={`flex flex-col h-screen bg-[#212121] transition-all duration-300 ${isCanvasOpen ? 'md:w-[50%]' : 'w-full'}`}>
+            <div className={`flex flex-col h-screen bg-[#212121] transition-all duration-300 ${isCanvasOpen ? 'md:w-[30%]' : 'w-full'}`}>
                 {/* Main Content Area */}
                 <div className="flex-1 overflow-y-auto">
                     {messages.length === 0 ? (
@@ -252,8 +252,8 @@ export function ChatArea() {
                                 >
                                     <div
                                         className={`rounded-2xl px-4 py-3 ${message.role === 'user'
-                                                ? 'bg-[#2f2f2f] text-white'
-                                                : 'bg-transparent text-white'
+                                            ? 'bg-[#2f2f2f] text-white'
+                                            : 'bg-transparent text-white'
                                             }`}
                                     >
                                         {message.role === 'assistant' && (
