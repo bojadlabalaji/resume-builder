@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Download, Copy, Undo, Redo, Share } from 'lucide-react'
+import { X, Download, Copy, Undo, Redo, Share2, Cloud, RefreshCw, MoreVertical, ChevronDown, Printer } from 'lucide-react'
 
 interface CanvasProps {
     isOpen: boolean
@@ -13,51 +13,76 @@ export function Canvas({ isOpen, onClose, content, title = 'Resume Preview' }: C
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-y-0 right-0 w-full md:w-[70%] bg-[#2f2f2f] border-l border-[#3f3f3f] flex flex-col z-40 animate-slide-in shadow-2xl">
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#3f3f3f]">
-                <div className="flex items-center gap-3">
-                    <h2 className="text-white font-semibold">{title}</h2>
+        <div className="fixed inset-y-0 right-0 w-full md:w-[70%] bg-[#1a1a1a] flex flex-col z-40 animate-slide-in shadow-2xl">
+            {/* Dark Toolbar */}
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1a1a] border-b border-[#2f2f2f]">
+                {/* Left: Document Title */}
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <button className="flex items-center gap-2 px-2 py-1 hover:bg-[#2f2f2f] rounded-lg transition-colors min-w-0">
+                        <span className="text-white text-sm truncate">{title}</span>
+                    </button>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    {/* Action Buttons */}
+                {/* Right: Action Buttons */}
+                <div className="flex items-center gap-1">
+                    {/* Cloud Save */}
                     <button
-                        className="p-2 hover:bg-[#3f3f3f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        aria-label="Save to cloud"
+                    >
+                        <Cloud className="w-4 h-4" />
+                    </button>
+
+                    {/* Undo */}
+                    <button
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
                         aria-label="Undo"
                     >
                         <Undo className="w-4 h-4" />
                     </button>
+
+                    {/* Redo */}
                     <button
-                        className="p-2 hover:bg-[#3f3f3f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
                         aria-label="Redo"
                     >
                         <Redo className="w-4 h-4" />
                     </button>
+
+                    {/* More Options */}
                     <button
-                        className="p-2 hover:bg-[#3f3f3f] rounded-lg transition-colors text-white/70 hover:text-white"
-                        aria-label="Copy"
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        aria-label="More options"
                     >
-                        <Copy className="w-4 h-4" />
+                        <MoreVertical className="w-4 h-4" />
                     </button>
+
+                    {/* Print */}
                     <button
-                        className="p-2 hover:bg-[#3f3f3f] rounded-lg transition-colors text-white/70 hover:text-white"
-                        aria-label="Download"
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        aria-label="Print"
                     >
-                        <Download className="w-4 h-4" />
+                        <Printer className="w-4 h-4" />
                     </button>
+
+                    {/* Share */}
                     <button
-                        className="p-2 hover:bg-[#3f3f3f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
                         aria-label="Share"
                     >
-                        <Share className="w-4 h-4" />
+                        <Share2 className="w-4 h-4" />
                     </button>
 
-                    <div className="w-px h-6 bg-[#3f3f3f] mx-1"></div>
+                    {/* Create Dropdown */}
+                    <button className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium ml-1">
+                        Create
+                        <ChevronDown className="w-4 h-4" />
+                    </button>
 
+                    {/* Close Button */}
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-[#3f3f3f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white ml-1"
                         aria-label="Close canvas"
                     >
                         <X className="w-5 h-5" />
@@ -65,36 +90,24 @@ export function Canvas({ isOpen, onClose, content, title = 'Resume Preview' }: C
                 </div>
             </div>
 
-            {/* Content Area */}
-            <div className="flex-1 overflow-y-auto p-6">
-                <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8 min-h-[1100px]">
-                    {/* Resume Content */}
+            {/* Content Area with White Document Container */}
+            <div className="flex-1 overflow-y-auto bg-[#1a1a1a] p-6">
+                {/* White Rounded Document Container */}
+                <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl min-h-[800px] p-12">
+                    {/* Document Content */}
                     {content ? (
                         <div className="prose prose-sm max-w-none">
                             <div className="text-black whitespace-pre-wrap">{content}</div>
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                        <div className="flex flex-col items-center justify-center h-[600px] text-gray-400">
                             <div className="text-center">
-                                <h3 className="text-xl font-semibold mb-2 text-gray-600">Resume Preview</h3>
-                                <p className="text-sm">Your generated resume will appear here</p>
+                                <Copy className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                <h3 className="text-xl font-semibold mb-2 text-gray-600">Document Preview</h3>
+                                <p className="text-sm">Your generated content will appear here</p>
                             </div>
                         </div>
                     )}
-                </div>
-            </div>
-
-            {/* Footer */}
-            <div className="border-t border-[#3f3f3f] px-6 py-3 bg-[#2f2f2f]">
-                <div className="flex items-center justify-between">
-                    <p className="text-xs text-white/40">
-                        Preview • Auto-saved
-                    </p>
-                    <div className="flex gap-2">
-                        <button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium">
-                            Download PDF
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
