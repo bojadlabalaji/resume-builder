@@ -1,10 +1,5 @@
 import api from "@/lib/api";
-
-export interface GenerateResumeResponse {
-    id: number;
-    name: string;
-    // Add other fields as needed based on API contract
-}
+import { GeneratedResume, RefineTextInput, RefineTextOutput } from "@/types/resume";
 
 export const uploadProfile = async (file: File, profileName: string = "Default Profile") => {
     const formData = new FormData();
@@ -24,12 +19,12 @@ export const generateResume = async (
     jobDescription: string,
     templateId: number,
     atsFeedback?: string
-): Promise<GenerateResumeResponse> => {
+): Promise<GeneratedResume> => {
     // 1. Upload the profile first
     const profile = await uploadProfile(file);
 
     // 2. Generate resume using the profile ID
-    const response = await api.post("/resume/generate-resume", null, {
+    const response = await api.post<GeneratedResume>("/resume/generate-resume", null, {
         params: {
             profile_id: profile.id,
             job_description: jobDescription,
@@ -39,6 +34,11 @@ export const generateResume = async (
         },
     });
 
+    return response.data;
+};
+
+export const refineText = async (data: RefineTextInput): Promise<RefineTextOutput> => {
+    const response = await api.post<RefineTextOutput>("/resume/refine-text", data);
     return response.data;
 };
 
@@ -56,4 +56,9 @@ export const downloadResume = async (resumeId: number, format: 'pdf' | 'docx') =
     document.body.appendChild(link);
     link.click();
     link.remove();
+};
+
+export const getResumes = async (): Promise<GeneratedResume[]> => {
+    const response = await api.get<GeneratedResume[]>("/resume/");
+    return response.data;
 };

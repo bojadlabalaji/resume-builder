@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/Button"
+import { downloadResume } from "@/services/resumeService"
+import { GeneratedResume } from "@/types/resume"
+import { Download, CheckCircle, AlertCircle } from "lucide-react"
+import { Loader2, X } from "lucide-react" // Keep Loader2 and X for loading/close button
 import { Card, CardContent } from "@/components/ui/Card"
-import { Loader2, Download, CheckCircle, AlertCircle, X } from "lucide-react"
-import { GenerateResumeResponse, downloadResume } from "@/services/resumeService"
 
 interface ResultModalProps {
     status: 'idle' | 'loading' | 'success' | 'error'
-    data: GenerateResumeResponse | null
+    data: GeneratedResume | null
     error: string
     onClose: () => void
 }

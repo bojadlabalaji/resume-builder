@@ -1,6 +1,9 @@
-'use client'
-
+import { useRef } from 'react'
 import { X, Download, Copy, Undo, Redo, Share2, Cloud, RefreshCw, MoreVertical, ChevronDown, Printer } from 'lucide-react'
+import { useResume } from '@/context/ResumeContext'
+import { ModernTemplate } from '../resume-templates/ModernTemplate'
+import { useReactToPrint } from 'react-to-print'
+import { generateDocx } from '@/utils/docxGenerator'
 
 interface CanvasProps {
     isOpen: boolean
@@ -10,6 +13,22 @@ interface CanvasProps {
 }
 
 export function Canvas({ isOpen, onClose, content, title = 'Resume Preview' }: CanvasProps) {
+    const { resumeData } = useResume()
+    const contentRef = useRef<HTMLDivElement>(null)
+
+    const handlePrint = useReactToPrint({
+        contentRef: contentRef,
+        documentTitle: title,
+    })
+
+    const handleDownloadDocx = () => {
+        if (resumeData) {
+            generateDocx(resumeData)
+        } else {
+            alert("No resume data to download")
+        }
+    }
+
     if (!isOpen) return null
 
     return (
@@ -57,12 +76,22 @@ export function Canvas({ isOpen, onClose, content, title = 'Resume Preview' }: C
                         <MoreVertical className="w-4 h-4" />
                     </button>
 
-                    {/* Print */}
+                    {/* Print / PDF */}
                     <button
+                        onClick={() => handlePrint()}
                         className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
-                        aria-label="Print"
+                        aria-label="Print / Save as PDF"
                     >
                         <Printer className="w-4 h-4" />
+                    </button>
+
+                    {/* Download DOCX */}
+                    <button
+                        onClick={handleDownloadDocx}
+                        className="p-2 hover:bg-[#2f2f2f] rounded-lg transition-colors text-white/70 hover:text-white"
+                        aria-label="Download DOCX"
+                    >
+                        <Download className="w-4 h-4" />
                     </button>
 
                     {/* Share */}
@@ -93,14 +122,16 @@ export function Canvas({ isOpen, onClose, content, title = 'Resume Preview' }: C
             {/* Content Area with White Document Container */}
             <div className="flex-1 overflow-y-auto bg-[#1a1a1a] p-6">
                 {/* White Rounded Document Container */}
-                <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl min-h-[800px] p-12">
+                <div ref={contentRef} className="max-w-[210mm] mx-auto bg-white rounded-2xl shadow-xl min-h-[297mm] overflow-hidden">
                     {/* Document Content */}
-                    {content ? (
-                        <div className="prose prose-sm max-w-none">
+                    {resumeData ? (
+                        <ModernTemplate data={resumeData} />
+                    ) : content ? (
+                        <div className="p-12 prose prose-sm max-w-none">
                             <div className="text-black whitespace-pre-wrap">{content}</div>
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center h-[600px] text-gray-400">
+                        <div className="flex flex-col items-center justify-center h-[600px] text-gray-400 p-12">
                             <div className="text-center">
                                 <Copy className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                                 <h3 className="text-xl font-semibold mb-2 text-gray-600">Document Preview</h3>

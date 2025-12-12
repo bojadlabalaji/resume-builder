@@ -12,9 +12,18 @@ services:
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: deps
     ports:
       - "3000:3000"
-    # volumes:
-    #   - ./frontend:/app
-    # command: npm start # Uncomment when frontend is ready
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+# Run commands
+# docker compose up --build (if this when code change and want to build)
+# docker compose up -d (if this when code change and want to run in background)
+# docker compose down (if this when want to stop the containers)

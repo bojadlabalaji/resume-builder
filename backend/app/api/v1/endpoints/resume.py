@@ -9,6 +9,8 @@ from pydantic import BaseModel
 from typing import Optional
 from app.agents.resume_tailor_agent.agent import root_agent
 from app.agents.resume_tailor_agent.schema import ResumeInput
+from app.schemas.resume import RefineTextInput, RefineTextOutput
+from app.agents.resume_tailor_agent.agent import refine_agent
 from app.services import file_service
 from google.adk.runners import InMemoryRunner
 from google.genai.types import Content, Part
@@ -19,6 +21,59 @@ from app.services.template_service import template_service
 router = APIRouter()
 app_name = "ResumeTailorAgent"
 runner = InMemoryRunner(agent=root_agent, app_name=app_name)
+
+
+
+@router.post("/refine-text", response_model=RefineTextOutput)
+async def refine_text(
+    input_data: RefineTextInput,
+    email: str = Depends(get_current_user),
+    db: Session = Depends(get_db)  
+):
+    """
+    Refine a specific piece of text using AI based on user instructions.
+    """
+    try:
+        current_user = db.query(User).filter(User.email == email).first()
+        if not current_user:
+            raise HTTPException(status_code=404, detail="User not found")
+            
+        # Initialize runner with refine_agent
+        refine_runner = InMemoryRunner(agent=refine_agent, app_name="RefineAgent")
+        
+        session_id = f"refine-session-{uuid.uuid4()}"
+        user_id = str(current_user.id)
+        
+        # Create session
+        await refine_runner.session_service.create_session(app_name="RefineAgent", user_id=user_id, session_id=session_id)
+        
+        # Prepare the prompt
+        prompt = f"""
+        original_text: {input_data.original_text}
+        instruction: {input_data.instruction}
+        """
+        if input_data.context:
+            prompt += f"context: {input_data.context}"
+            
+        # Send message to runner
+        message = Content(role="user", parts=[Part(text=prompt)])
+        
+        async for _ in refine_runner.run_async(user_id=user_id, session_id=session_id, new_message=message):
+            pass
+            
+        # Get result from session state (populated by submit_refinement tool)
+        final_session = await refine_runner.session_service.get_session(app_name="RefineAgent", user_id=user_id, session_id=session_id)
+        
+        refined_text = final_session.state.get("refined_text")
+             
+        if not refined_text:
+             raise HTTPException(status_code=500, detail="Failed to refine text. Agent did not return a refined result.")
+             
+        return RefineTextOutput(refined_text=refined_text)
+
+    except Exception as e:
+        print(f"Error refining text: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/generate-resume")

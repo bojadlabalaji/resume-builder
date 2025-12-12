@@ -21,4 +21,19 @@ api.interceptors.request.use(
     }
 );
 
+// Add a response interceptor to handle auth errors
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            // Clear token and redirect to login
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('access_token');
+                window.location.href = '/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default api;

@@ -1,23 +1,27 @@
+
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import { Loader2, Download, CheckCircle, AlertCircle } from "lucide-react"
-import { generateResume, downloadResume, type GenerateResumeResponse } from "@/services/resumeService"
+import { generateResume, downloadResume } from "@/services/resumeService"
+import { GeneratedResume } from "@/types/resume"
 
 interface GenerationStepProps {
     file: File
     jobDescription: string
     templateId: number
+    atsFeedback?: string
     onReset: () => void
 }
 
-export function GenerationStep({ file, jobDescription, templateId, onReset }: GenerationStepProps) {
-    const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
-    const [resumeData, setResumeData] = useState<GenerateResumeResponse | null>(null)
+export function GenerationStep({ file, jobDescription, templateId, atsFeedback, onReset }: GenerationStepProps) {
+    const [status, setStatus] = useState<'idle' | 'generating' | 'success' | 'error'>('idle')
+    const [resumeData, setResumeData] = useState<GeneratedResume | null>(null)
     const [error, setError] = useState<string>("")
 
     useEffect(() => {
         const processGeneration = async () => {
+            setStatus('generating')
             try {
                 // 1. Upload File & Create Profile (Mocking this flow for now as per plan, but ideally should be separate)
                 // Actually, the plan said: Step 1: Upload (POST /user-profile/), Step 4: Generate (POST /resume/generate-resume)
@@ -56,7 +60,7 @@ export function GenerationStep({ file, jobDescription, templateId, onReset }: Ge
         }
     }
 
-    if (status === 'loading') {
+    if (status === 'generating' || status === 'idle') {
         return (
             <Card className="w-full max-w-2xl mx-auto text-center py-12">
                 <CardContent className="flex flex-col items-center space-y-4">

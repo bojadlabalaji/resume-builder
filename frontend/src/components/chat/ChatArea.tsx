@@ -5,6 +5,7 @@ import { ChatInput } from './ChatInput'
 import { Canvas } from './Canvas'
 import { DocumentSelector } from './DocumentSelector'
 import { Sparkles, Upload, FileText, Wand2 } from 'lucide-react'
+import { useResume } from '@/context/ResumeContext'
 
 interface Message {
     id: string
@@ -32,6 +33,8 @@ export function ChatArea() {
     const [showDocumentSelector, setShowDocumentSelector] = useState(false)
     const [selectorType, setSelectorType] = useState<'resume' | 'cover_letter' | 'all'>('all')
 
+    const { setResumeData, setIsLoading, setJobDescription } = useResume()
+
     const handleSendMessage = (content: string) => {
         const newMessage: Message = {
             id: Date.now().toString(),
@@ -51,8 +54,23 @@ export function ChatArea() {
 
             // Simulate resume generation after user types "generate" 
             if (content.toLowerCase().includes('generate') || content.toLowerCase().includes('create')) {
+                setIsLoading(true)
                 // Simulate AI generation delay
                 setTimeout(() => {
+                    // Update global state
+                    setResumeData({
+                        basic_info: {
+                            full_name: "John Doe",
+                            summary: "Software Engineer with 5+ years experience...",
+                            email: "john@example.com",
+                            location: "San Francisco, CA"
+                        },
+                        experience: [],
+                        education: [],
+                        skills: []
+                    })
+                    setIsLoading(false)
+
                     setCanvasContent('# Sample Resume\n\n## John Doe\n\nSoftware Engineer with 5+ years experience...')
                     // Mark document as having content
                     if (selectedDocument) {
